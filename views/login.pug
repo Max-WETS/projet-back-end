@@ -1,0 +1,23 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Log in
+h1 Se connecter
+form(action='/' method='post')
+  div
+    label(for='username') Pseudo: 
+    input#username(type='text' name='username' value='' required='')
+  div
+    label(for='password') Mot de passe: 
+    input#password(type='text' name='password' value='' required='')
+  div
+    input(type='submit' value='Envoyer')
+
+  p
+    | Pas encore inscrit ? Veuillez vous 
+    a(href='/registration') enregistrer
+  .container
+      block content
+script.

@@ -1,0 +1,27 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(http-equiv='X-UA-Compatible' content='IE=edge')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Document
+
+p
+  | Bienvenue, 
+  if sessionUsername
+  span#pseudo #{sessionUsername}
+  |  !
+
+p
+  a(href='/logout') Se déconnecter
+
+div
+    input#newgame(type='submit' value='Nouvelle partie')
+
+p#num-users
+ul#user 
+
+
+script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')
+script(src='/socket.io/socket.io.js')
+script(async, defer, src='/client.js')
+  
