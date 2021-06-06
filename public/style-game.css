@@ -1,0 +1,74 @@
+* {
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: #FFC4AA;
+}
+
+#container-menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+body p {
+  margin: auto;
+  text-align: center;
+  font-size: 20px;
+  animation: blinker 3s linear infinite;
+}
+
+@keyframes blinker {  
+  50% { opacity: 0; }
+}
+
+table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: 3px solid gray;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: auto;
+  }
+  td {
+    text-align: center;
+    padding: 20px 10px;
+    border: 1px solid black;
+  }
+  
+  .remaining-indicator {
+    display: inline-block;
+    padding: 0.5em;
+    margin: 0 5px;
+    border-radius: 8px 3px 8px 3px;
+    font-weight: 400;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #ebdbb2;
+  }
+  .remaining-indicator div { display: inline-block; }
+  .remaining-indicator.blue-indicator { color: #076678; }
+  .remaining-indicator.red-indicator { color: #9d0006; }
+  
+  .gameword {
+    width: 15%;
+    background-color: white;
+    transition: background 0.35s ease-in;
+    transition: 0.35s ease-in;
+    font-size: 20px;
+    font-weight: 300;
+  }
+  /* base colors */
+  .gameword.activated { color: rgba(29,32,33,0.4); }
+  .redword.activated, .redword.spymaster { background: #cc241d; }
+  .blueword.activated, .blueword.spymaster { background: #458588; }
+  .neutralword.activated, .neutralword.spymaster { background: #d79921; }
+  .poisonword.activated, .poisonword.spymaster { background: #282828; }
+  .poisonword.activated, .poisonword.spymaster { color: #f9f5d7; border-color: #3c3836; }
+  /* spymaster activated colors */
+  /* .gameword.activated.spymaster { opacity: 0.8; }
+  .gameword.poisonword.activated.spymaster {
+    background: linear-gradient(30deg, #282828 20%, #504945);
+  } */
+  
+  
+  

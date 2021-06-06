@@ -3,36 +3,33 @@ head
   meta(charset='UTF-8')
   meta(http-equiv='X-UA-Compatible' content='IE=edge')
   meta(name='viewport' content='width=device-width, initial-scale=1.0')
-  link(rel='stylesheet' href='/style.css')
+  link(rel='stylesheet' href='/style-game.css')
   title Codenames
 
 p
   | Ecran de jeu de : 
   span#player-name #{sessionUsername}
 
-div#turns
-
-div#active-player
-div#active-spymaster
-
-div#spymaster-input
-    label(for='clue') Indice: 
-    input#clue(type='text' name='clue' value='' required='')
-    label(for='nbr-words') Nbr_mots: 
-    input#nbr-words(type='text' name='nbr-words' value='' required='')
-
-div#guesser-display
-
-div
-    input#btn-plyr1(type='submit' value='Soumettre indice')
-
-div
-    input#btn-plyr2(type='submit' value='Valider tour')
-div
-    input#next-turn(type='submit' value='Tour suivant')
-
-div
-    input#quitgame(type='submit' value='Quitter la partie')
+div#container-menu
+  div#left
+    div#turns
+    div#active-player
+    div#active-spymaster
+    div#spymaster-input
+      label(for='clue') Indice: 
+      input#clue(type='text', name='clue', value='', required='')
+      label(for='nbr-words') Nbr_mots: 
+      input#nbr-words(type='text', name='nbr-words', value='', required='')
+    div#guesser-display
+    div
+      input#btn-plyr1(type='submit', value='Soumettre indice')
+    div
+      input#btn-plyr2(type='submit', value='Valider tour')
+    div
+      input#next-turn(type='submit', value='Tour suivant')
+      
+  div#right
+    input#quitgame(type='submit', value='Quitter la partie')
 
 hr
 div

@@ -29,8 +29,10 @@ function clickActivates(node) {
         })
 
         if (node.className.includes('poisonword')) {
+            // alert('Assassin !');
             socket.emit('poison', {
-                poison: true
+                poison: true,
+                poisonedPlayer: clientID
             });
         }
      }
@@ -90,12 +92,6 @@ function renderAll(cartesNvellePartie, distribMots) {
   renderBoard(cartesNvellePartie, distribMots);
   updateRemainingIndicators();
 }
-
-
-  
-
-
-
 
 
     // SOCKET.IO //

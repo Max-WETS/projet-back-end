@@ -102,33 +102,24 @@ function switchSpyMaster() {
   }
 }
 
+function updateUserDB(filter, field, update) {
+  User.findOneAndUpdate(filter, update, { new: true }).then(doc => {
+    if (!doc) { console.dir('score update didn\'t work'); }
+    console.dir(`Le champ ${field} de ${doc.username} est maintenant égal à: ${doc[field]}.`);
+  })
+}
+
 async function updateScore(player) {
   let filter = { username: player };
   let update = { $inc: { score: 1 } };
 
-  let doc = await User.findOneAndUpdate(filter, update, { new: true }).then(doc => {
-    if (!doc) { console.dir('score update didn\'t work'); }
-    console.dir(`Le score de ${doc.username} est maintenant de: ${doc.score} points.`);
-  })
+  let doc = await updateUserDB(filter, 'score', update);
 }
   
-  // const dbProjet = await client.db('projectdb').collection('utilisateurs');
   const options = { useNewUrlParser: true, useUnifiedTopology: true };
   const client = new MongoClient(URI, options);
   const conn = mongoose.connect(URI, options);
   const connection = mongoose.connection;
-
-  connection.on('open', function() {
-  const dbProjet = connection.db.collection('users', function(err, collection) {
-    if (err) { 
-      console.dir('pas de connexion'); 
-    }
-    collection.find({}).toArray(function(err, data) {
-      console.dir(data);
-      return data;
-    })
-  });
-});
   
   // Register routes
   app.use('/', require('./routes'));
@@ -167,24 +158,25 @@ app.use(function(err, req, res, next) {
      io.on('connection', socket => {
       console.dir('A user has connected: ' + socket.request.user.username);
       ++currentUsers;
-      
-      // if (listOnlineUsers.indexOf(socket.request.user.username) == -1) listOnlineUsers.push(socket.request.user.username); 
-      // console.dir(listOnlineUsers);
 
-          if ( listOnlineUsers.find(user => user.username == socket.request.user.username) == null ) {
-            User.findOne({ username: socket.request.user.username }, function(err, user) {
-            if (err) { console.log('pas d\'utilisateur trouvé')};
+      if ( listOnlineUsers.find(user => user.username == socket.request.user.username) == null ) {
+      User.findOne({ username: socket.request.user.username }, function(err, user) {
+      if (err) { console.log('pas d\'utilisateur trouvé')};
+      console.dir('user found / name: ' + user.username + ' - score: ' + user.score);
 
-            listOnlineUsers.push({
-              username: socket.request.user.username,
-              score: user.score
-            });
-          })
-        }
+      listOnlineUsers.push({
+        username: user.username,
+        score: user.score,
+        avatarColor: user.avatar
+      });
+      console.dir('liste connexion: ' + JSON.stringify(listOnlineUsers));
+      io.emit('user', {
+        currentUsers,
+        onlineUsers: listOnlineUsers
+        });
+      })
+    }
         
-        console.log(socket.request.user.username,  + ': ' + socket.request.user.score + 'victoires');
-        console.dir(listOnlineUsers);
-      
 
      io.emit('user', {
       name: socket.request.user.username,
@@ -193,17 +185,32 @@ app.use(function(err, req, res, next) {
       onlineUsers: listOnlineUsers
     });
 
+    // socket.on('logout', function(data) {
+    //   if ( listOnlineUsers.find(user => user.username == data) != null ) {
+    //     let idx = null;
+    //     for (let i = 0; i < listOnlineUsers.length; i++) { if (listOnlineUsers[i].username == data) idx = i }
+    //     listOnlineUsers.splice(idx, 1);
+    //     }
+    //     console.dir(listOnlineUsers);
+
+    //   io.emit('logout update', {
+    //     onlineUsers: listOnlineUsers
+    //   });
+    // })
+
     socket.on('new game', (data) => {
-      console.dir('a new game will start, the 1st player is: ' + data);
+    
       firstPlayerName = data;
+      currentPlayer = firstPlayerName;
+      console.dir('1st Player: ' + firstPlayerName);
       for (let user of listOnlineUsers) {
-        if (user != firstPlayerName) player2 = user;
+        if (user.username != firstPlayerName) player2 = user.username;
       }
 
       Player1HasPlayed = false;
       Player2HasPlayed = false;
 
-      findActivePlayer();
+      // findActivePlayer();
       switchSpyMaster();
 
       console.dir('first player\'s name: ' + data + ' / ' + 'second player\'s name: ' + player2);
@@ -214,7 +221,7 @@ app.use(function(err, req, res, next) {
       turn = 1;
       
     })
-    
+
     console.dir(firstPlayerName);
     io.emit('start game', {
       firstPlayerName: firstPlayerName,
@@ -231,6 +238,7 @@ app.use(function(err, req, res, next) {
       distribMots: gameController.distribMots(LIMITE)
 
     });
+    
 
     socket.on('end P1', (data) => {
       Player1HasPlayed = data.Player1HasPlayed;
@@ -292,6 +300,7 @@ app.use(function(err, req, res, next) {
           endMessage = 'le joueur 1 a gagné';
           updateScore(firstPlayerName);
         }
+
         console.dir(endMessage);
 
         io.emit('end game', endMessage);
@@ -306,6 +315,20 @@ app.use(function(err, req, res, next) {
           spyMaster: spyMaster 
         });
       }
+    })
+
+    socket.on('poison', async (data) => {
+      let endMessage = '';
+
+      if ( data.poison ) {
+        let nbr = data.poisonedPlayer = firstPlayerName ? 1 : 2;
+        nbr == 1 ? await updateScore(firstPlayerName) : await updateScore(player2);
+        endMessage = `Vous êtes tombé sur une carte assassin ! le joueur ${nbr} a gagné`;
+        console.dir(endMessage);
+        
+        io.emit('end game', endMessage);
+      }
+
     })
     
     socket.on('quit game', () => {
@@ -322,21 +345,19 @@ app.use(function(err, req, res, next) {
       console.dir('A user has disconnected: ' + socket.request.user.username);
       --currentUsers;
       
-      if (listOnlineUsers.indexOf(socket.request.user.username) > -1) {
+      if ( listOnlineUsers.find(user => user.username == socket.request.user.username) != null ) {
         let idx = null;
-        for (let i = 0; i < listOnlineUsers.length; i++) { if (listOnlineUsers[i] == socket.request.user.username) idx = i }
+        for (let i = 0; i < listOnlineUsers.length; i++) { if (listOnlineUsers[i].username == socket.request.user.username) idx = i }
         listOnlineUsers.splice(idx, 1);
-        idx = null;
+        }
         console.dir(listOnlineUsers);
-      };
-      
+
       io.emit('user', {
         name: socket.request.user.username,
         currentUsers,
         connected: false,
         onlineUsers: listOnlineUsers
       });
-
 
     });
   });
