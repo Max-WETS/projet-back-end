@@ -78,7 +78,7 @@ let currentPlayer = '';
 let Player1HasPlayed = false;
 let Player2HasPlayed = false;
 let turn = 1;
-const max_turns = 2;
+const max_turns = 9;
 let clue = '';
 let nbr_words = null;
 
