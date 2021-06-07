@@ -1,6 +1,7 @@
 $(document).ready(function () {
 
     // GAMEBOARD //
+    // Les lignes 6 à 95, qui couvrent l'ensemble des fonction d'affichage du plateau de jeu Codenames, sont reprises d'un dépôt disponible publiquement (https://github.com/sirosen/codenames-js)
 
 function updateRemainingIndicators() {
   var countBlue = document.querySelectorAll(".blueword").length;
@@ -88,7 +89,7 @@ function renderBoard(cartesNvellePartie, distribMots) {
 }
 
 function renderAll(cartesNvellePartie, distribMots) {
-  var firstPlayer = 'blue';
+  let firstPlayer = 'blue';
   renderBoard(cartesNvellePartie, distribMots);
   updateRemainingIndicators();
 }
