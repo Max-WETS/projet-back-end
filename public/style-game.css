@@ -28,6 +28,10 @@ body p:first-child {
   50% { opacity: 0; }
 }
 
+#active-spymaster {
+  display: none;
+}
+
 table {
     table-layout: fixed;
     border-collapse: collapse;
