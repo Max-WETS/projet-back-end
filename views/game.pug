@@ -18,7 +18,7 @@ div#container-menu
     div#spymaster-input
       label(for='clue') Indice: 
       input#clue(type='text', name='clue', value='', required='')
-      label(for='nbr-words') Nbr_mots: 
+      label(for='nbr-words') Nombre de Noms de Code concernés: 
       input#nbr-words(type='text', name='nbr-words', value='', required='')
     div#guesser-display
     div
@@ -47,6 +47,11 @@ div
     #redRemaining
 hr
 #wordList
+
+h1 Règle du jeu 
+p Il s'agit d'un mode coopératif de Codenames jouable à deux: vous devez retrouver tous vos Noms de Code avant la fin du temps imparti. Pour cela, vous devez, tour à tour, deviner ou faire deviner les Noms de Code en donnant le meilleur indice possible. 
+p Pour cela, chacun à votre tour, vous donnez un indice pouvant désigner plusieurs Noms de Code de la couleur de votre partenaire sur le plateau. Votre partenaire, quant à lui, tente de deviner ses Noms de Code tout en évitant de rencontrer l’un des terribles Assassins qui vous font perdre la partie.
+p Trouvez l’ensemble des 16 Noms de Code avant la fin des 9 tours pour remporter la victoire. Sinon, le joueur finissant avec le plus petit nombre de cartes de sa propre couleur remporte la partie.
 
 script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js')
 script(src='/socket.io/socket.io.js')

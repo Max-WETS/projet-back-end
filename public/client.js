@@ -24,10 +24,13 @@ $(document).ready(function () {
 
         }
 
-        $('#newgame').click(function() {
-            if (data.currentUsers == 2) {
+        $('#newgame').unbind().click(function() {
+
+            if (userList.length == 2) {
                 socket.emit('new game', sessionUser 
                 );
+            } else {
+                alert('Deux joueurs doivent être connectés pour jouer.');
             }
         })
 

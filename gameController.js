@@ -96,5 +96,5 @@ exports.cartesNvellePartie = function cartesNvellePartie(nbrCartesAJouer, cartes
 exports.distribMots = function distribMots(nbrCartesAJouer) {
     var arrIdxMots = serieIndexAleatoires(nbrCartesAJouer, nbrCartesAJouer);
   
-    return [arrIdxMots.slice(0, 8), arrIdxMots.slice(8, 17), arrIdxMots[17]];
+    return [arrIdxMots.slice(0, 8), arrIdxMots.slice(8, 16), arrIdxMots[16]];
   };

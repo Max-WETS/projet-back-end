@@ -28,11 +28,11 @@ function clickActivates(node) {
             tileName: node.innerHTML
         })
 
-        if (node.className.includes('poisonword')) {
+        if (node.className.includes('assassin')) {
             // alert('Assassin !');
-            socket.emit('poison', {
-                poison: true,
-                poisonedPlayer: clientID
+            socket.emit('murder', {
+                murdered: true,
+                murderedPlayer: clientID
             });
         }
      }
@@ -56,7 +56,7 @@ function renderBoard(cartesNvellePartie, distribMots) {
   
   let bluewords = distributionMots[0], redwords = distributionMots[1];
    
-  let poisonword = distributionMots[2];
+  let assassin = distributionMots[2];
 
   // clear board
   clearBoard()
@@ -70,8 +70,8 @@ function renderBoard(cartesNvellePartie, distribMots) {
       var td = document.createElement("TD");
       td.appendChild(document.createTextNode(listeMots[idx]));
       td.classList.add("gameword");
-      if (idx == poisonword) {
-        td.classList.add("poisonword")
+      if (idx == assassin) {
+        td.classList.add("assassin")
       } else if (redwords.includes(idx)) {
         td.classList.add("redword")
       } else if (bluewords.includes(idx)) {

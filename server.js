@@ -94,7 +94,7 @@ function findActivePlayer() {
 }
 
 function switchSpyMaster() {
-  if (spyMaster == '' && turn == 1 || spyMaster == player2) {
+  if (turn % 2 != 0) {
     spyMaster = firstPlayerName;
   }
   else {
@@ -185,19 +185,6 @@ app.use(function(err, req, res, next) {
       onlineUsers: listOnlineUsers
     });
 
-    // socket.on('logout', function(data) {
-    //   if ( listOnlineUsers.find(user => user.username == data) != null ) {
-    //     let idx = null;
-    //     for (let i = 0; i < listOnlineUsers.length; i++) { if (listOnlineUsers[i].username == data) idx = i }
-    //     listOnlineUsers.splice(idx, 1);
-    //     }
-    //     console.dir(listOnlineUsers);
-
-    //   io.emit('logout update', {
-    //     onlineUsers: listOnlineUsers
-    //   });
-    // })
-
     socket.on('new game', (data) => {
     
       firstPlayerName = data;
@@ -280,11 +267,11 @@ app.use(function(err, req, res, next) {
 
     socket.on('next turn', (data) => {
       findActivePlayer();
-      switchSpyMaster();
       
       Player1HasPlayed = false;
       Player2HasPlayed = false;
       turn++;
+      switchSpyMaster();
 
       if (turn == max_turns ) {
         let endMessage = '';
@@ -317,11 +304,11 @@ app.use(function(err, req, res, next) {
       }
     })
 
-    socket.on('poison', async (data) => {
+    socket.on('murder', async (data) => {
       let endMessage = '';
 
-      if ( data.poison ) {
-        let nbr = data.poisonedPlayer = firstPlayerName ? 1 : 2;
+      if ( data.murdered ) {
+        let nbr = data.murderedPlayer = firstPlayerName ? 1 : 2;
         nbr == 1 ? await updateScore(firstPlayerName) : await updateScore(player2);
         endMessage = `Vous êtes tombé sur une carte assassin ! le joueur ${nbr} a gagné`;
         console.dir(endMessage);

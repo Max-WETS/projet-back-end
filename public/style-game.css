@@ -6,13 +6,18 @@ body {
   background-color: #FFC4AA;
 }
 
+h1 {
+  font-size: 18px;
+  margin-top: 26px;
+}
+
 #container-menu {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-body p {
+body p:first-child {
   margin: auto;
   text-align: center;
   font-size: 20px;
@@ -62,13 +67,9 @@ table {
   .redword.activated, .redword.spymaster { background: #cc241d; }
   .blueword.activated, .blueword.spymaster { background: #458588; }
   .neutralword.activated, .neutralword.spymaster { background: #d79921; }
-  .poisonword.activated, .poisonword.spymaster { background: #282828; }
-  .poisonword.activated, .poisonword.spymaster { color: #f9f5d7; border-color: #3c3836; }
-  /* spymaster activated colors */
-  /* .gameword.activated.spymaster { opacity: 0.8; }
-  .gameword.poisonword.activated.spymaster {
-    background: linear-gradient(30deg, #282828 20%, #504945);
-  } */
+  .assassin.activated, .assassin.spymaster { background: #282828; }
+  .assassin.activated, .assassin.spymaster { color: #f9f5d7; border-color: #3c3836; }
+  
   
   
   
